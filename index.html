@@ -760,6 +760,56 @@
   <span>BTS SIO · MyDigitalSchool Caen</span>
 </footer>
 
-<script src="script.js"></script>
+<script>
+  // ─── Navigation SPA ───
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+
+    const target = document.getElementById(id);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    const navEl = document.getElementById('nav-' + id);
+    if (navEl) navEl.classList.add('active');
+  }
+
+  // ─── Formulaire de contact ───
+  function handleSubmit() {
+    const name    = document.getElementById('f-name').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const subject = document.getElementById('f-subject').value.trim();
+    const message = document.getElementById('f-message').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Merci de remplir au moins votre nom, email et message.');
+      return;
+    }
+
+    // Ici vous pouvez brancher un vrai backend (fetch POST, EmailJS, Formspree…)
+    const success = document.getElementById('form-success');
+    success.style.display = 'block';
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-subject').value = '';
+    document.getElementById('f-message').value = '';
+    setTimeout(() => { success.style.display = 'none'; }, 5000);
+  }
+
+  // ─── Barre de compétences animée à l'apparition ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.transition = 'width .9s cubic-bezier(.4,0,.2,1)';
+        });
+      }
+    });
+  }, { threshold: .3 });
+
+  document.querySelectorAll('.skills-grid').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
