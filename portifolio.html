@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rafael Jongerlynck — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --surface: #111820;
+      --border: #1e2d3d;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(8,12,16,.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.02em;
+      color: var(--accent);
+      cursor: pointer;
+    }
+    .nav-logo span { color: var(--text); }
+
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+    .nav-cta {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: background .2s, color .2s;
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+    /* ─── PAGES ─── */
+    .page { display: none; padding-top: 80px; min-height: 100vh; }
+    .page.active { display: block; }
+
+    /* ─── HOME ─── */
+    #home {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 0 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    #home.active { display: flex; }
+
+    .home-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: .35;
+    }
+
+    .home-glow {
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,229,255,.07) 0%, transparent 70%);
+      top: -100px; right: -100px;
+      pointer-events: none;
+    }
+    .home-glow2 {
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(124,58,237,.08) 0%, transparent 70%);
+      bottom: 0; left: 200px;
+      pointer-events: none;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 1100px; }
+
+    .hero-grid {
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-left { flex: 0 0 45%; display: flex; align-items: center; }
+    .hero-right { flex: 1 1 55%; }
+    .hero-name { text-transform: uppercase; }
+
+    @media (max-width: 768px) {
+      .hero-grid { flex-direction: column; gap: 1.2rem; }
+      .hero-left, .hero-right { flex: 1 1 100%; }
+      .hero-name { font-size: clamp(2rem, 8vw, 3.2rem); }
+      #home { padding-left: 1.5rem; padding-right: 1.5rem; }
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: .3rem .8rem;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp .6s .2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: clamp(2.6rem, 5.5vw, 4.8rem);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp .6s .35s forwards;
+    }
+    .hero-name .accent { color: var(--accent); }
+
+    .hero-sub {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: var(--muted);
+      margin-top: .8rem;
+      opacity: 0;
+      animation: fadeUp .6s .5s forwards;
+    }
+
+    .hero-desc {
+      font-size: .85rem;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-top: 1.8rem;
+      max-width: 520px;
+      opacity: 0;
+      animation: fadeUp .6s .65s forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .6s .8s forwards;
+    }
+
+    .btn-primary {
+      padding: .8rem 2rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: opacity .2s, transform .2s;
+    }
+    .btn-primary:hover { opacity: .85; transform: translateY(-2px); }
+
+    .btn-ghost {
+      padding: .8rem 2rem;
+      background: transparent;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      opacity: 0;
+      animation: fadeUp .6s 1s forwards;
+    }
+    .stat-val {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+    .stat-label { font-size: .7rem; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-top: .2rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── SECTION COMMONS ─── */
+    .section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 4rem; }
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -.02em;
+      line-height: 1.1;
+    }
+    .section-divider {
+      width: 60px; height: 3px;
+      background: var(--accent);
+      margin: 1.5rem 0 3rem;
+    }
+
+    /* ─── PROJETS ─── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, transform .25s;
+      cursor: default;
+    }
+    .project-link { display: block; color: inherit; text-decoration: none; }
+    .project-link .project-card { cursor: pointer; }
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.04), transparent);
+      opacity: 0;
+      transition: opacity .25s;
+    }
+    .project-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-num {
+      font-size: .72rem;
+      color: var(--accent);
+      letter-spacing: .15em;
+      margin-bottom: 1rem;
+    }
+    .project-name {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: .6rem;
+    }
+    .project-desc { font-size: .82rem; color: var(--muted); line-height: 1.7; }
+    .project-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.2rem; }
+    .tag {
+      font-size: .68rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .25rem .7rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .project-arrow {
+      position: absolute;
+      top: 1.5rem; right: 1.5rem;
+      font-size: 1.2rem;
+      color: var(--muted);
+      transition: color .2s, transform .2s;
+    }
+    .project-card:hover .project-arrow { color: var(--accent); transform: translate(3px,-3px); }
+
+    /* ─── ÉCOLE ─── */
+    .school-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) { .school-layout { grid-template-columns: 1fr; } }
+
+    .school-badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .school-logo-text {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1;
+    }
+    .school-logo-sub { font-size: .75rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; margin-top: .4rem; }
+
+    .info-block { margin-bottom: 1.5rem; }
+    .info-key { font-size: .7rem; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: .3rem; }
+    .info-val { font-size: .9rem; color: var(--text); line-height: 1.6; }
+
+    .formation-cards { display: flex; flex-direction: column; gap: 1rem; }
+    .formation-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+    }
+    .formation-card h3 { font-family: var(--font-head); font-size: 1rem; font-weight: 700; margin-bottom: .3rem; }
+    .formation-card p { font-size: .8rem; color: var(--muted); line-height: 1.6; }
+
+    .skills-grid { display: flex; flex-direction: column; gap: .8rem; margin-top: 2rem; }
+    .skill-row { display: flex; align-items: center; gap: 1rem; }
+    .skill-name { font-size: .78rem; width: 130px; flex-shrink: 0; }
+    .skill-bar { flex: 1; height: 4px; background: var(--border); position: relative; overflow: hidden; }
+    .skill-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; }
+    .skill-pct { font-size: .7rem; color: var(--muted); width: 35px; text-align: right; }
+
+    /* ─── CONTACT ─── */
+    .contact-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media (max-width: 768px) { .contact-layout { grid-template-columns: 1fr; } }
+
+    .contact-info p { font-size: .85rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      margin-bottom: .8rem;
+      text-decoration: none;
+      color: var(--text);
+      font-size: .82rem;
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+    }
+    .contact-link:hover { border-color: var(--accent); background: rgba(0,229,255,.03); }
+    .contact-link-icon { font-size: 1.1rem; }
+    .contact-link-label { flex: 1; }
+    .contact-link-val { color: var(--muted); font-size: .78rem; }
+
+    .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: .5rem; }
+    .form-label { font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
+
+    .form-input, .form-textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: .83rem;
+      padding: .85rem 1rem;
+      outline: none;
+      transition: border-color .2s;
+      width: 100%;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+    .form-textarea { min-height: 140px; }
+
+    .form-submit {
+      padding: .9rem;
+      background: var(--accent);
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: opacity .2s;
+    }
+    .form-submit:hover { opacity: .85; }
+
+    .form-success {
+      display: none;
+      padding: 1rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: .82rem;
+      text-align: center;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .72rem;
+      color: var(--muted);
+    }
+
+    /* ─── SCROLLBAR ─── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
+
+    /* ─── RESPONSIVE NAV ─── */
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .nav-cta { display: none; }
+      #home, .section-inner { padding-left: 1.5rem; padding-right: 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: .5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo" onclick="showPage('home')">RJ</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Accueil</a></li>
+    <li><a onclick="showPage('projects')" id="nav-projects">Projets</a></li>
+    <li><a onclick="showPage('school')" id="nav-school">École</a></li>
+  </ul>
+  <button class="nav-cta" onclick="showPage('contact')">Me contacter</button>
+</nav>
+
+<!-- ═══════════════ HOME ═══════════════ -->
+<section id="home" class="page active">
+  <div class="home-grid-bg"></div>
+  <div class="home-glow"></div>
+  <div class="home-glow2"></div>
+
+  <div class="hero-content">
+    <span class="hero-tag">BTS SIO · MyDigitalSchool Caen</span>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <h1 class="hero-name">RAFAEL<br><span class="accent">JONGERLYNCK</span></h1>
+      </div>
+      <div class="hero-right">
+        <p class="hero-sub">Étudiant en informatique & développement</p>
+        <p class="hero-desc">
+          Passionné par le développement web et les solutions informatiques,
+          je suis actuellement en BTS Services Informatiques aux Organisations
+          à MyDigitalSchool Caen. Toujours en quête d'apprentissage et de nouveaux défis.
+        </p>
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showPage('projects')">Voir mes projets</button>
+          <button class="btn-ghost" onclick="showPage('contact')">Me contacter</button>
+        </div>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-val">BTS</div>
+        <div class="stat-label">SIO en cours</div>
+      </div>
+      <div>
+        <div class="stat-val">2+</div>
+        <div class="stat-label">Projets réalisés</div>
+      </div>
+      <div>
+        <div class="stat-val">Caen</div>
+        <div class="stat-label">Normandie, FR</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ PROJETS ═══════════════ -->
+<section id="projects" class="page">
+  <div class="section-inner">
+    <div class="section-label">// Mes réalisations</div>
+    <h2 class="section-title">Projets</h2>
+    <div class="section-divider"></div>
+
+    <div class="projects-grid">
+
+      <!-- Projet 01 supprimé -->
+
+      <a href="project-01.html" class="project-link">
+      <div class="project-card">
+        <div class="project-num">01 —</div>
+        <div class="project-arrow">↗</div>
+        <div class="project-name">Application Réseau</div>
+        <p class="project-desc">
+          Projet orienté infrastructure et réseau, configuration et administration
+          d'un système informatique complet en environnement simulé.
+        </p>
+        <div class="project-tags">
+          <span class="tag">Réseau</span>
+          <span class="tag">Linux</span>
+          <span class="tag">Administration</span>
+        </div>
+      </div>
+      </a>
+
+      <a href="project-02.html" class="project-link">
+      <div class="project-card">
+        <div class="project-num">02 —</div>
+        <div class="project-arrow">↗</div>
+        <div class="project-name">Portfolio Personnel</div>
+        <p class="project-desc">
+          Ce portfolio ! Conçu entièrement en HTML, CSS et JavaScript vanilla.
+          Navigation SPA fluide, design responsive et thème sombre moderne.
+        </p>
+        <div class="project-tags">
+          <span class="tag">HTML</span>
+          <span class="tag">CSS</span>
+          <span class="tag">JS</span>
+          <span class="tag">Design</span>
+        </div>
+      </div>
+      </a>
+
+      <!-- Carte "En cours" -->
+      <div class="project-card" style="border-style: dashed; opacity: .6;">
+        <div class="project-num">04 —</div>
+        <div class="project-name" style="color:var(--muted);">Prochain projet…</div>
+        <p class="project-desc">Un nouveau projet est en cours de développement. Restez connecté !</p>
+        <div class="project-tags">
+          <span class="tag" style="border-color:var(--accent);color:var(--accent);">En cours</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ ÉCOLE ═══════════════ -->
+<section id="school" class="page">
+  <div class="section-inner">
+    <div class="section-label">// Parcours académique</div>
+    <h2 class="section-title">Mon École</h2>
+    <div class="section-divider"></div>
+
+    <div class="school-layout">
+      <!-- Colonne gauche -->
+      <div>
+        <div class="school-badge">
+          <div class="school-logo-text">MDS</div>
+          <div class="school-logo-sub">MyDigitalSchool</div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-key">Établissement</div>
+          <div class="info-val">MyDigitalSchool Caen</div>
+        </div>
+        <div class="info-block">
+          <div class="info-key">Formation</div>
+          <div class="info-val">BTS Services Informatiques aux Organisations (SIO)</div>
+        </div>
+        <div class="info-block">
+          <div class="info-key">Localisation</div>
+          <div class="info-val">Caen, Normandie — France</div>
+        </div>
+        <div class="info-block">
+          <div class="info-key">Durée</div>
+          <div class="info-val">2 ans (Bac+2)</div>
+        </div>
+
+        <!-- Compétences -->
+        <div style="margin-top: 2.5rem;">
+          <div class="section-label">// Compétences techniques</div>
+          <div class="skills-grid">
+            <div class="skill-row">
+              <span class="skill-name">HTML / CSS</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:20%"></div></div>
+              <span class="skill-pct">20%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">JavaScript</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:20%"></div></div>
+              <span class="skill-pct">20%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">PHP / SQL</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:20%"></div></div>
+              <span class="skill-pct">20%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">Réseau</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:35%"></div></div>
+              <span class="skill-pct">35%</span>
+            </div>
+            <div class="skill-row">
+              <span class="skill-name">Linux</span>
+              <div class="skill-bar"><div class="skill-fill" style="width:25%"></div></div>
+              <span class="skill-pct">25%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite -->
+      <div>
+        <div class="section-label" style="margin-bottom:1rem">// Programme BTS SIO</div>
+        <div class="formation-cards">
+          <div class="formation-card">
+            <h3>Développement Web & Applications</h3>
+            <p>Conception et développement d'applications web full-stack. Maîtrise des langages HTML, CSS, JavaScript, PHP et des bases de données relationnelles.</p>
+          </div>
+          <div class="formation-card">
+            <h3>Infrastructure & Réseaux</h3>
+            <p>Administration systèmes et réseaux, virtualisation, sécurité informatique et gestion des infrastructures d'entreprise.</p>
+          </div>
+          <div class="formation-card">
+            <h3>Cybersécurité</h3>
+            <p>Sensibilisation aux enjeux de la sécurité informatique, protection des données et mise en place de politiques de sécurité.</p>
+          </div>
+          <div class="formation-card">
+            <h3>Gestion de Projet</h3>
+            <p>Méthodes agiles, travail en équipe, gestion de projet informatique et communication professionnelle en environnement technique.</p>
+          </div>
+          <div class="formation-card" style="border-left-color:var(--accent2)">
+            <h3>Stages en entreprise</h3>
+            <p>Immersion professionnelle en entreprise permettant d'appliquer les compétences acquises dans un contexte réel et opérationnel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ CONTACT ═══════════════ -->
+<section id="contact" class="page">
+  <div class="section-inner">
+    <div class="section-label">// Entrer en relation</div>
+    <h2 class="section-title">Me Contacter</h2>
+    <div class="section-divider"></div>
+
+    <div class="contact-layout">
+      <!-- Infos gauche -->
+      <div class="contact-info">
+        <p>
+          Étudiant en BTS SIO à Caen, je suis ouvert aux opportunités d'alternance,
+          pour un poste de technicien réseau. N'hésitez pas à me laisser un message !
+        </p>
+
+        <div class="contact-link">
+          <span class="contact-link-icon">📧</span>
+          <span class="contact-link-label">Email</span>
+          <span class="contact-link-val">rafael.jongerlynck@gmail.com</span>
+        </div>
+        <div class="contact-link">
+          <span class="contact-link-icon">📍</span>
+          <span class="contact-link-label">Localisation</span>
+          <span class="contact-link-val">Caen, Normandie</span>
+        </div>
+        <div class="contact-link">
+          <span class="contact-link-icon">🎓</span>
+          <span class="contact-link-label">École</span>
+          <span class="contact-link-val">MyDigitalSchool Caen</span>
+        </div>
+        <div class="contact-link">
+          <span class="contact-link-icon">🐙</span>
+          <span class="contact-link-label">GitHub</span>
+          <span class="contact-link-val">RafaeLPrimee</span>
+        </div>
+      </div>
+
+      <!-- Formulaire droite -->
+      <div>
+        <div class="contact-form">
+          <div class="form-group">
+            <label class="form-label">Votre nom</label>
+            <input class="form-input" type="text" id="f-name" placeholder="Nom Prenom" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Votre email</label>
+            <input class="form-input" type="email" id="f-email" placeholder="votre@exemple.fr" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Sujet</label>
+            <input class="form-input" type="text" id="f-subject" placeholder="Proposition d'alternance, collaboration…" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" id="f-message" placeholder="Dites-moi tout…"></textarea>
+          </div>
+          <button class="form-submit" onclick="handleSubmit()">Envoyer le message →</button>
+          <div class="form-success" id="form-success">
+            ✓ Message bien reçu ! Je vous répondrai dans les plus brefs délais.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 Rafael Jongerlynck</span>
+  <span>BTS SIO · MyDigitalSchool Caen</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
