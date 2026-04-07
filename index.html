@@ -506,8 +506,7 @@
       <div class="hero-right">
         <p class="hero-sub">Étudiant en informatique & développement</p>
         <p class="hero-desc">
-          Passionné par le développement web et les solutions informatiques,
-          je suis actuellement en BTS Services Informatiques aux Organisations
+          Passionné par les solutions informatiques, le réseau je suis actuellement en BTS SIO (Services Informatiques aux Organisations)
           à MyDigitalSchool Caen. Toujours en quête d'apprentissage et de nouveaux défis.
         </p>
         <div class="hero-actions">
@@ -810,6 +809,16 @@
   }, { threshold: .3 });
 
   document.querySelectorAll('.skills-grid').forEach(el => observer.observe(el));
+
+  // ─── Gestion des paramètres URL ───
+  document.addEventListener('DOMContentLoaded', function() {
+    const params = new URLSearchParams(window.location.search);
+    const section = params.get('section');
+    if (section === 'projects') {
+      showPage('projects');
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  });
 </script>
 </body>
 </html>

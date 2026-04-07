@@ -4,6 +4,19 @@
 ═══════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────
+   0. HANDLE QUERY PARAMETERS
+   Gère la navigation via paramètresURL
+───────────────────────────────────────────── */
+
+window.addEventListener('load', function() {
+  var params = new URLSearchParams(window.location.search);
+  var section = params.get('section');
+  if (section && section === 'projects') {
+    showPage('projects');
+  }
+});
+
+/* ─────────────────────────────────────────────
    1. NAVIGATION SPA
    Gère l'affichage des pages sans rechargement
 ───────────────────────────────────────────── */
