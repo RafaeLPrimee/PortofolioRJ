@@ -4,19 +4,6 @@
 ═══════════════════════════════════════════════ */
 
 /* ─────────────────────────────────────────────
-   0. HANDLE QUERY PARAMETERS
-   Gère la navigation via paramètresURL
-───────────────────────────────────────────── */
-
-window.addEventListener('load', function() {
-  var params = new URLSearchParams(window.location.search);
-  var section = params.get('section');
-  if (section && section === 'projects') {
-    showPage('projects');
-  }
-});
-
-/* ─────────────────────────────────────────────
    1. NAVIGATION SPA
    Gère l'affichage des pages sans rechargement
 ───────────────────────────────────────────── */
@@ -162,18 +149,41 @@ function handleSubmit() {
 
   if (!valid) return;
 
-  // Désactiver le bouton pendant "l'envoi"
+  // Désactiver le bouton pendant l'envoi
   var btn = document.getElementById('btn-submit');
   btn.disabled = true;
   btn.textContent = 'Envoi en cours…';
 
-  // Simuler un délai d'envoi (à remplacer par un vrai fetch/EmailJS)
-  setTimeout(function() {
-    showSuccessMessage();
-    resetForm();
+  // Récupérer le sujet
+  var subjectInput = document.getElementById('f-subject');
+  var subject = subjectInput ? subjectInput.value.trim() : '';
+
+  // Envoi via Formspree
+  fetch('https://formspree.io/f/xaqlvand', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      name:    name,
+      email:   email,
+      subject: subject,
+      message: message
+    })
+  })
+  .then(function(response) {
+    if (response.ok) {
+      showSuccessMessage();
+      resetForm();
+    } else {
+      alert('Une erreur est survenue. Merci de réessayer.');
+    }
+  })
+  .catch(function() {
+    alert('Impossible d\'envoyer le message. Vérifie ta connexion internet.');
+  })
+  .finally(function() {
     btn.disabled = false;
     btn.textContent = 'Envoyer le message →';
-  }, 1200);
+  });
 }
 
 /**

@@ -626,7 +626,7 @@
 
         <!-- Compétences -->
         <div style="margin-top: 2.5rem;">
-          <div class="section-label">// Compétences techniques</div>
+          <div class="section-label">// Compétences techniques - personnelles</div>
           <div class="skills-grid">
             <div class="skill-row">
               <span class="skill-name">HTML / CSS</span>
@@ -743,7 +743,9 @@
             <label class="form-label">Message</label>
             <textarea class="form-textarea" id="f-message" placeholder="Dites-moi tout…"></textarea>
           </div>
-          <button class="form-submit" onclick="handleSubmit()">Envoyer le message →</button>
+          <button class="form-submit" id="btn-submit">
+            Envoyer le message →
+          </button>
           <div class="form-success" id="form-success">
             ✓ Message bien reçu ! Je vous répondrai dans les plus brefs délais.
           </div>
@@ -775,28 +777,6 @@
     if (navEl) navEl.classList.add('active');
   }
 
-  // ─── Formulaire de contact ───
-  function handleSubmit() {
-    const name    = document.getElementById('f-name').value.trim();
-    const email   = document.getElementById('f-email').value.trim();
-    const subject = document.getElementById('f-subject').value.trim();
-    const message = document.getElementById('f-message').value.trim();
-
-    if (!name || !email || !message) {
-      alert('Merci de remplir au moins votre nom, email et message.');
-      return;
-    }
-
-    // Ici vous pouvez brancher un vrai backend (fetch POST, EmailJS, Formspree…)
-    const success = document.getElementById('form-success');
-    success.style.display = 'block';
-    document.getElementById('f-name').value = '';
-    document.getElementById('f-email').value = '';
-    document.getElementById('f-subject').value = '';
-    document.getElementById('f-message').value = '';
-    setTimeout(() => { success.style.display = 'none'; }, 5000);
-  }
-
   // ─── Barre de compétences animée à l'apparition ───
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -820,5 +800,6 @@
     }
   });
 </script>
+<script src="script.js"></script>
 </body>
 </html>
