@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Projet 01 — Application Réseau</title>
+  <link rel="icon" type="image/png" href="RJ-portfolio.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
@@ -188,11 +189,152 @@
       font-weight: bold;
     }
 
+    .subprojects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .subproject-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .2s, transform .2s, background .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .subproject-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.04), transparent);
+      opacity: 0;
+      transition: opacity .2s;
+    }
+
+    .subproject-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      background: rgba(0,229,255,.02);
+    }
+
+    .subproject-card:hover::before {
+      opacity: 1;
+    }
+
+    .subproject-title {
+      font-family: var(--font-head);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.8rem;
+      color: var(--text);
+      position: relative;
+      z-index: 1;
+    }
+
+    .subproject-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .subproject-arrow {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      font-size: 1rem;
+      color: var(--muted);
+      transition: color .2s, transform .2s;
+    }
+
+    .subproject-card:hover .subproject-arrow {
+      color: var(--accent);
+      transform: translate(3px, -3px);
+    }
+
+    /* ─── MODAL ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, .7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      animation: fadeIn .2s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      width: 90%;
+      max-width: 650px;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideUp .3s ease;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color .2s;
+      z-index: 10;
+    }
+    .modal-close:hover { color: var(--accent); }
+
+    .modal-body {
+      padding: 3rem 2rem 2rem;
+    }
+
+    .modal-body h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-body h2 {
+      margin-top: 1.5rem;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .subproject-card {
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       nav { padding: 1rem 1.5rem; }
       main { padding: 80px 1.5rem 2rem; }
       h1 { font-size: 2rem; }
       h2 { font-size: 1.3rem; }
+      .subprojects-grid { grid-template-columns: 1fr; }
+      .modal-content { width: 95%; max-height: 90vh; }
+      .modal-body { padding: 2.5rem 1.5rem 1.5rem; }
     }
   </style>
 </head>
@@ -205,13 +347,82 @@
   <main>
     <h1>Application Réseau</h1>
     <p>Projet orienté infrastructure et réseau, configuration et administration d'un système informatique complet en environnement simulé.</p>
-    
-    <h2>Compétences</h2>
-    <ul>
-      <li>Réseaux</li>
-      <li>Linux</li>
-      <li>Administration système</li>
-    </ul>
+
+    <h2>Détails du Projet</h2>
+    <div class="subprojects-grid">
+      <div class="subproject-card" onclick="openModal('wordpress-docker.html')">
+        <div class="subproject-arrow">↗</div>
+        <div class="subproject-title">WordPress & Docker</div>
+        <p class="subproject-desc">
+          Déploiement d'une instance WordPress complète containerisée avec Docker et configuration de MySQL.
+        </p>
+      </div>
+
+      <div class="subproject-card" onclick="openModal('adminer-db.html')">
+        <div class="subproject-arrow">↗</div>
+        <div class="subproject-title">Gestion des Bases de Données</div>
+        <p class="subproject-desc">
+          Administration de bases de données MySQL et PostgreSQL via Adminer, interface complète de gestion.
+        </p>
+      </div>
+
+      <div class="subproject-card" onclick="openModal('vpn-certificates.html')">
+        <div class="subproject-arrow">↗</div>
+        <div class="subproject-title">VPN & Certificats</div>
+        <p class="subproject-desc">
+          Configuration d'une infrastructure VPN sécurisée avec certificats SSL/TLS pour l'authentification.
+        </p>
+      </div>
+    </div>
   </main>
+
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modal" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    async function openModal(filename) {
+      const modal = document.getElementById('modal');
+      const modalBody = document.getElementById('modalBody');
+
+      try {
+        const response = await fetch(filename);
+        const html = await response.text();
+        
+        // Extraire le contenu du <main>
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const mainContent = doc.querySelector('main');
+        
+        if (mainContent) {
+          modalBody.innerHTML = mainContent.innerHTML;
+        }
+        
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      } catch (error) {
+        modalBody.innerHTML = `<p style="color: var(--muted);">Erreur lors du chargement du contenu.</p>`;
+        modal.classList.add('active');
+      }
+    }
+
+    function closeModal(event) {
+      // Fermer si on clique sur l'overlay ou le bouton close
+      if (event && event.target.id !== 'modal') return;
+      
+      const modal = document.getElementById('modal');
+      modal.classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Fermer avec Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
 </body>
 </html>
