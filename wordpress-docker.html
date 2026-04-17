@@ -207,8 +207,122 @@
     <h1>Déploiement WordPress avec Docker</h1>
     <p>Déploiement d'une instance WordPress complète containerisée avec Docker, utilisant MySQL comme base de données.</p>
     
-    <h2>Contenu à venir</h2>
-    <p>Cette page sera complétée avec les détails du déploiement...</p>
+    <h2>📦 Prérequis</h2>
+    <p>Avant de commencer, assure-toi d'avoir :</p>
+    <ul>
+      <li>Docker installé</li>
+      <li>Docker Compose installé (souvent inclus avec Docker Desktop)</li>
+      <li>Accès à un terminal</li>
+    </ul>
+    <p><strong>Vérification :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker --version
+docker compose version</code></pre>
+
+    <h2>📁 Création de l'environnement</h2>
+    <p>Créer un dossier de projet :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>mkdir wordpress-docker
+cd wordpress-docker</code></pre>
+
+    <h2>⚙️ Création du fichier docker-compose.yml</h2>
+    <p>Créer un fichier :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>nano docker-compose.yml</code></pre>
+    <p>Puis ajouter :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: wordpress_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD: wp_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    depends_on:
+      - db
+    ports:
+      - "8080:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wp_user
+      WORDPRESS_DB_PASSWORD: wp_password
+      WORDPRESS_DB_NAME: wordpress
+    volumes:
+      - wordpress_data:/var/www/html
+
+volumes:
+  db_data:
+  wordpress_data:</code></pre>
+
+    <h2>🚀 Lancement des containers</h2>
+    <p>Dans le dossier :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker compose up -d</code></pre>
+    <p><strong>Cela va :</strong></p>
+    <ul>
+      <li>Télécharger les images nécessaires</li>
+      <li>Créer les containers</li>
+      <li>Lancer WordPress + MySQL</li>
+    </ul>
+
+    <h2>🌐 Accès à WordPress</h2>
+    <p>Ouvre ton navigateur :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>http://localhost:8080</code></pre>
+    <p>Tu verras l'écran d'installation de WordPress :</p>
+    <ul>
+      <li>Choisir la langue</li>
+      <li>Configurer le site</li>
+      <li>Créer un utilisateur admin</li>
+    </ul>
+
+    <h2>🔍 Vérification</h2>
+    <p>Lister les containers actifs :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker ps</code></pre>
+    <p>Tu dois voir :</p>
+    <ul>
+      <li>wordpress_app</li>
+      <li>wordpress_db</li>
+    </ul>
+
+    <h2>🛠️ Commandes utiles</h2>
+    <p><strong>Arrêter les containers :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker compose down</code></pre>
+    <p><strong>Voir les logs :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker compose logs -f</code></pre>
+    <p><strong>Redémarrer :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>docker compose restart</code></pre>
+
+    <h2>💾 Persistance des données</h2>
+    <p>Les volumes Docker :</p>
+    <ul>
+      <li><strong>db_data</strong> → base de données MySQL</li>
+      <li><strong>wordpress_data</strong> → fichiers WordPress</li>
+    </ul>
+    <p>👉 Les données restent même si les containers sont supprimés.</p>
+
+    <h2>🔐 Bonnes pratiques (recommandé)</h2>
+    <ul>
+      <li>Changer les mots de passe par défaut</li>
+      <li>Ne pas exposer MySQL publiquement</li>
+      <li>Ajouter un reverse proxy (Nginx)</li>
+      <li>Activer HTTPS (ex : Let's Encrypt)</li>
+      <li>Sauvegarder les volumes régulièrement</li>
+    </ul>
+
+    <h2>✅ Résultat</h2>
+    <p>Tu disposes maintenant :</p>
+    <ul>
+      <li>d'un WordPress fonctionnel</li>
+      <li>d'une base MySQL séparée</li>
+      <li>d'une architecture conteneurisée, portable et reproductible</li>
+    </ul>
   </main>
 </body>
 </html>

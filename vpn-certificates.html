@@ -207,8 +207,166 @@
     <h1>Installation VPN avec Certificats</h1>
     <p>Configuration d'une infrastructure VPN sécurisée utilisant des certificats SSL/TLS pour l'authentification et le chiffrement des connexions.</p>
     
-    <h2>Contenu à venir</h2>
-    <p>Cette page sera complétée avec les détails de l'installation du VPN...</p>
+    <h2>🔹 1) Prérequis</h2>
+    <p>Tu dois disposer de :</p>
+    <ul>
+      <li>📄 Certificat CA : autorite-certification.p12</li>
+      <li>🪪 Certificat client : Rafael+JONGERLYNCK+.p12</li>
+      <li>🌐 Adresse du VPN : vpn.oob.local</li>
+      <li>🌍 IP publique : 81.255.74.21</li>
+      <li>🔑 Mot de passe des certificats</li>
+    </ul>
+
+    <h2>🔐 2) Installer les certificats (MMC)</h2>
+    
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">➤ Ouvrir MMC</h3>
+    <ul>
+      <li>Win + R</li>
+      <li>Tape :</li>
+    </ul>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>mmc</code></pre>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">➤ Ajouter le composant Certificats</h3>
+    <ul>
+      <li>Fichier → Ajouter/Supprimer un composant logiciel enfichable</li>
+      <li>Certificats → Ajouter</li>
+      <li>Choisir :
+        <ul style="margin-top: 0.5rem;">
+          <li>👉 Compte d'ordinateur</li>
+          <li>👉 Ordinateur local</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">➤ Importer le certificat CA (serveur)</h3>
+    <p><strong>Chemin :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>Certificats (ordinateur local)
+→ Autorités de certification racines de confiance
+→ Certificats</code></pre>
+    <ul style="margin-top: 1rem;">
+      <li>Clic droit → Importer</li>
+      <li>Sélectionner : autorite-certification.p12</li>
+      <li>Entrer le mot de passe</li>
+      <li>Terminer</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">➤ Importer le certificat client (toi)</h3>
+    <p><strong>Chemin :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>Certificats (ordinateur local)
+→ Personnel
+→ Certificats</code></pre>
+    <ul style="margin-top: 1rem;">
+      <li>Clic droit → Importer</li>
+      <li>Sélectionner : Rafael+JONGERLYNCK+.p12</li>
+      <li>Entrer le mot de passe</li>
+      <li>Cocher : clé exportable (si proposé)</li>
+      <li>Terminer</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">✔ Vérification</h3>
+    <p>Ton certificat doit :</p>
+    <ul>
+      <li>Avoir une clé privée</li>
+      <li>Contenir : Client Authentication</li>
+    </ul>
+
+    <h2>🌐 3) Résolution du nom VPN</h2>
+    <p>Si vpn.oob.local n'est pas résolu :</p>
+    <p><strong>Ouvrir en admin :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>C:\Windows\System32\drivers\etc\hosts</code></pre>
+    <p><strong>Ajouter :</strong></p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>81.255.74.21    vpn.oob.local</code></pre>
+
+    <h2>💻 4) Création du VPN</h2>
+    <p>Ouvrir PowerShell en admin :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>Add-VpnConnection `
+-Name "VPN-MDS" `
+-ServerAddress "vpn.oob.local" `
+-TunnelType IKEv2 `
+-AuthenticationMethod MachineCertificate `
+-EncryptionLevel Required `
+-SplitTunneling $False `
+-RememberCredential</code></pre>
+
+    <h2>🔐 5) Configuration IPsec (recommandé)</h2>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>Set-VpnConnectionIPsecConfiguration `
+-ConnectionName "VPN-MDS" `
+-AuthenticationTransformConstants SHA256128 `
+-CipherTransformConstants AES256 `
+-DHGroup Group14 `
+-EncryptionMethod AES256 `
+-IntegrityCheckMethod SHA256 `
+-PFSgroup PFS2048 `
+-Force</code></pre>
+    <p style="margin-top: 1rem; color: #64748b;">(optionnel selon version Windows)</p>
+
+    <h2>🌍 6) Route réseau (optionnel)</h2>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>Add-VpnConnectionRoute -ConnectionName "VPN-MDS" -DestinationPrefix 192.168.1.0/24</code></pre>
+
+    <h2>🔄 7) Redémarrage</h2>
+    <p>👉 Redémarrer le PC après :</p>
+    <ul>
+      <li>installation certificats</li>
+      <li>modification registre</li>
+      <li>config VPN</li>
+    </ul>
+
+    <h2>🔌 8) Connexion</h2>
+    <ul>
+      <li>Paramètres → Réseau → VPN</li>
+      <li>Sélectionner VPN-MDS</li>
+      <li>Cliquer sur Connecter</li>
+    </ul>
+
+    <h2>✅ Résultat attendu</h2>
+    <ul>
+      <li>✔ Pas de demande login</li>
+      <li>✔ Connexion automatique avec certificat</li>
+      <li>✔ Pas d'erreur IKE</li>
+      <li>✔ Tunnel VPN actif</li>
+    </ul>
+
+    <h2>🚨 Dépannage (si erreur IKE)</h2>
+    <p>Vérifier :</p>
+    <ul>
+      <li>Certificat client dans :
+        <ul style="margin-top: 0.5rem;">
+          <li>Ordinateur local → Personnel</li>
+        </ul>
+      </li>
+      <li>Certificat CA dans :
+        <ul style="margin-top: 0.5rem;">
+          <li>Autorités de certification racines</li>
+        </ul>
+      </li>
+      <li>Nom serveur = vpn.oob.local (pas IP)</li>
+      <li>Certificat contient Client Authentication</li>
+      <li>Clé privée présente</li>
+    </ul>
+
+    <h2>🎯 Résumé</h2>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+      <tr style="border-bottom: 1px solid #1e2d3d;">
+        <td style="padding: 0.75rem; color: #00e5ff; font-weight: bold;">Élément</td>
+        <td style="padding: 0.75rem; color: #00e5ff; font-weight: bold;">Valeur</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #1e2d3d;">
+        <td style="padding: 0.75rem;">Serveur VPN</td>
+        <td style="padding: 0.75rem;">vpn.oob.local</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #1e2d3d;">
+        <td style="padding: 0.75rem;">Certificat utilisé</td>
+        <td style="padding: 0.75rem;">rjongerlynck@oob.local</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #1e2d3d;">
+        <td style="padding: 0.75rem;">Authentification</td>
+        <td style="padding: 0.75rem;">MachineCertificate</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.75rem;">Type VPN</td>
+        <td style="padding: 0.75rem;">IKEv2</td>
+      </tr>
+    </table>
   </main>
 </body>
 </html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV — Rafael Jongerlynck</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .cv-container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    }
+
+    .cv-header {
+      text-align: center;
+      border-bottom: 3px solid #00e5ff;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .cv-name {
+      font-size: 32px;
+      font-weight: bold;
+      color: #080c10;
+      margin-bottom: 5px;
+    }
+
+    .cv-title {
+      font-size: 16px;
+      color: #00e5ff;
+      font-weight: 600;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+
+    .cv-contact {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 13px;
+      color: #555;
+      flex-wrap: wrap;
+    }
+
+    .cv-contact span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cv-section {
+      margin-bottom: 30px;
+    }
+
+    .cv-section-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #080c10;
+      border-bottom: 2px solid #00e5ff;
+      padding-bottom: 8px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .cv-entry {
+      margin-bottom: 18px;
+    }
+
+    .cv-entry-title {
+      font-weight: bold;
+      color: #080c10;
+      font-size: 14px;
+    }
+
+    .cv-entry-subtitle {
+      color: #00e5ff;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    .cv-entry-date {
+      color: #888;
+      font-size: 12px;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .cv-entry-desc {
+      color: #555;
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .cv-skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+
+    .cv-skill-group {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 4px;
+      border-left: 3px solid #00e5ff;
+    }
+
+    .cv-skill-category {
+      font-weight: bold;
+      color: #080c10;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .cv-skill-items {
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .cv-intro {
+      background: #f0fbfc;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #00e5ff;
+      margin-bottom: 25px;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .btn-download {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #00e5ff;
+      color: #080c10;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      border: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: background 0.3s ease;
+    }
+
+    .btn-download:hover {
+      background: #00d0e5;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .cv-container {
+        padding: 20px;
+      }
+
+      .cv-name {
+        font-size: 24px;
+      }
+
+      .cv-contact {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .cv-skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+
+      .cv-container {
+        box-shadow: none;
+        max-width: 100%;
+      }
+
+      .controls {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="cv-container">
+    <div class="controls">
+      <button class="btn-download" id="downloadBtn">📥 Télécharger en PDF</button>
+      <button class="btn-download" onclick="window.print()" style="background: #7c3aed;">🖨️ Imprimer</button>
+    </div>
+
+    <div id="cvContent">
+      <div class="cv-header">
+        <div class="cv-name">RAFAEL JONGERLYNCK</div>
+        <div class="cv-title">Étudiant BTS SIO · Informatique & Réseaux</div>
+        <div class="cv-contact">
+          <span>📍 20 rue Pierre et Hélène Collet, 14280 Authie</span>
+          <span>📧 rafael.jongerlynck@gmail.com</span>
+          <span>📱 07 68 77 74 35</span>
+        </div>
+      </div>
+
+      <div class="cv-intro">
+        <strong>Profil :</strong> Actuellement en BTS SIO, je suis à la recherche d'une entreprise pour réaliser cette formation en alternance, afin de concilier mes études avec une première expérience de travail enrichissante et développer des compétences pratiques, tout en contribuant activement à votre activité.
+      </div>
+
+      <!-- FORMATIONS -->
+      <div class="cv-section">
+        <div class="cv-section-title">🎓 Formations</div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">BTS SIO : Services Informatiques aux Organisations</div>
+          <div class="cv-entry-subtitle">MyDigitalSchool & Institut Lemonnier Caen</div>
+          <div class="cv-entry-date">2025-2026</div>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">BTS CIEL, option Informatique et Réseaux</div>
+          <div class="cv-entry-subtitle">Institut Lemonnier Caen</div>
+          <div class="cv-entry-date">2024-2025</div>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">Baccalauréat STI2D</div>
+          <div class="cv-entry-subtitle">Lycée Jules Fil Carcassonne</div>
+          <div class="cv-entry-date">2023-2024</div>
+        </div>
+      </div>
+
+      <!-- EXPÉRIENCES -->
+      <div class="cv-section">
+        <div class="cv-section-title">💼 Expériences Professionnelles</div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">Porteur Funéraire</div>
+          <div class="cv-entry-subtitle">Pompes Funèbres Plessis-Lemerre, Carpiquet</div>
+          <div class="cv-entry-date">2024-2025</div>
+          <div class="cv-entry-desc">Responsable de l'accueil et du respect des protocoles funéraires. Développement de l'empathie, de la discrétion professionnelle et de la gestion émotionnelle.</div>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">Agent Intérimaire</div>
+          <div class="cv-entry-subtitle">Agence Supplay Intérim, Caen</div>
+          <div class="cv-entry-date">2024-2025</div>
+          <div class="cv-entry-desc">Missions variées : préparateur de commandes, ripeur et manutentionnaire. Ces expériences m'ont permis de développer ma polyvalence, ma réactivité et ma capacité d'adaptation dans des environnements exigeants.</div>
+        </div>
+
+        <div class="cv-entry">
+          <div class="cv-entry-title">Stagiaire Boucherie</div>
+          <div class="cv-entry-subtitle">Boucherie Noizillier Fabien, Pennautier (11)</div>
+          <div class="cv-entry-date">2021</div>
+          <div class="cv-entry-desc">Découverte du métier sur une semaine en immersion. Accueil des clients, techniques de découpes, préparation des commandes, hygiène et propreté.</div>
+        </div>
+      </div>
+
+      <!-- COMPÉTENCES -->
+      <div class="cv-section">
+        <div class="cv-section-title">🛠️ Compétences & Qualités</div>
+        <div class="cv-skills-grid">
+          <div class="cv-skill-group">
+            <div class="cv-skill-category">💻 Informatique</div>
+            <div class="cv-skill-items">
+              • Développement Web (Base)<br>
+              • Réseaux (Base)<br>
+              • Maîtrise outils informatiques
+            </div>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-category">🌍 Langues</div>
+            <div class="cv-skill-items">
+              • Anglais<br>
+              • Espagnol
+            </div>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-category">⭐ Qualités</div>
+            <div class="cv-skill-items">
+              • Responsable<br>
+              • Rigoureux<br>
+              • Travail en équipe<br>
+              • Réactivité & Adaptation
+            </div>
+          </div>
+
+          <div class="cv-skill-group">
+            <div class="cv-skill-category">🏅 Sports</div>
+            <div class="cv-skill-items">
+              • Gymnastique (10 ans)<br>
+              • Niveau compétition<br>
+              • Championnat de France
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Télécharger en PDF
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const element = document.getElementById('cvContent');
+      const opt = {
+        margin: 10,
+        filename: 'CV_Rafael_Jongerlynck.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+  </script>
+</body>
+</html>

@@ -297,3 +297,16 @@ document.querySelectorAll('.project-card').forEach(function(card, index) {
     footerSpans[0].textContent = '© ' + currentYear + ' Rafael Jongerlynck';
   }
 })();
+
+/* ─────────────────────────────────────────────
+   8. GESTION DES PARAMÈTRES URL
+   Redirection vers une section spécifique
+───────────────────────────────────────────── */
+
+(function() {
+  var urlParams = new URLSearchParams(window.location.search);
+  var section = urlParams.get('section');
+  if (section) {
+    showPage(section);
+  }
+})();

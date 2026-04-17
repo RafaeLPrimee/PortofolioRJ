@@ -207,8 +207,187 @@
     <h1>Gestion des Bases de Données</h1>
     <p>Gestion et administration des bases de données MySQL et PostgreSQL via Adminer, interface web complète pour la gestion de données.</p>
     
-    <h2>Contenu à venir</h2>
-    <p>Cette page sera complétée avec les détails de la gestion des bases de données...</p>
+    <h2>🎯 Objectif</h2>
+    <p>Mettre en place et utiliser Adminer comme interface web pour :</p>
+    <ul>
+      <li>Administrer des bases de données MySQL et PostgreSQL</li>
+      <li>Gérer les utilisateurs et les droits</li>
+      <li>Manipuler les données (CRUD)</li>
+      <li>Effectuer des sauvegardes et restaurations</li>
+    </ul>
+
+    <h2>🧰 Prérequis</h2>
+    <ul>
+      <li>Serveur web (Apache, Nginx ou équivalent)</li>
+      <li>PHP installé (version compatible)</li>
+      <li>Accès à une base MySQL et/ou PostgreSQL</li>
+      <li>Fichier Adminer (adminer.php)</li>
+    </ul>
+
+    <h2>🚀 Installation d'Adminer</h2>
+    <ul>
+      <li>Télécharger Adminer depuis le site officiel</li>
+      <li>Placer le fichier adminer.php dans le répertoire du serveur web (ex : /var/www/html)</li>
+    </ul>
+    <p>Accéder via navigateur :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>http://localhost/adminer.php</code></pre>
+
+    <h2>🔐 Connexion à une base de données</h2>
+    <p><strong>Étapes :</strong></p>
+    <ul>
+      <li>Ouvrir Adminer dans le navigateur</li>
+      <li>Sélectionner le type de SGBD :
+        <ul style="margin-top: 0.5rem;">
+          <li>MySQL</li>
+          <li>PostgreSQL</li>
+        </ul>
+      </li>
+      <li>Renseigner :
+        <ul style="margin-top: 0.5rem;">
+          <li>Serveur (ex : localhost)</li>
+          <li>Nom d'utilisateur</li>
+          <li>Mot de passe</li>
+          <li>Base de données (optionnel)</li>
+        </ul>
+      </li>
+      <li>Cliquer sur Connexion</li>
+    </ul>
+
+    <h2>🗂️ Gestion des bases de données</h2>
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">5.1 Création d'une base</h3>
+    <ul>
+      <li>Aller dans Créer une base de données</li>
+      <li>Saisir le nom</li>
+      <li>Choisir l'encodage (UTF-8 recommandé)</li>
+      <li>Valider</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">5.2 Suppression d'une base</h3>
+    <ul>
+      <li>Sélectionner la base</li>
+      <li>Cliquer sur Supprimer</li>
+    </ul>
+    <p style="color: #ff6b6b; margin-top: 0.5rem;">⚠️ Attention : action irréversible</p>
+
+    <h2>📊 Gestion des tables</h2>
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">6.1 Création d'une table</h3>
+    <ul>
+      <li>Cliquer sur Créer une table</li>
+      <li>Définir :
+        <ul style="margin-top: 0.5rem;">
+          <li>Nom de la table</li>
+          <li>Colonnes (nom, type, taille, contraintes)</li>
+        </ul>
+      </li>
+      <li>Valider</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">6.2 Modification d'une table</h3>
+    <ul>
+      <li>Sélectionner la table</li>
+      <li>Cliquer sur Modifier la structure</li>
+      <li>Apporter les changements</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">6.3 Suppression d'une table</h3>
+    <ul>
+      <li>Cliquer sur Supprimer</li>
+    </ul>
+
+    <h2>📝 Gestion des données (CRUD)</h2>
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Ajouter des données</h3>
+    <ul>
+      <li>Cliquer sur la table</li>
+      <li>Sélectionner Insérer</li>
+      <li>Remplir les champs</li>
+      <li>Valider</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Lire les données</h3>
+    <ul>
+      <li>Cliquer sur Sélectionner</li>
+      <li>Appliquer filtres si besoin</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Modifier des données</h3>
+    <ul>
+      <li>Cliquer sur une ligne</li>
+      <li>Modifier les champs</li>
+      <li>Enregistrer</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Supprimer des données</h3>
+    <ul>
+      <li>Cocher les lignes</li>
+      <li>Cliquer sur Supprimer</li>
+    </ul>
+
+    <h2>👥 Gestion des utilisateurs et droits</h2>
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">MySQL</h3>
+    <ul>
+      <li>Accéder à Privilèges</li>
+      <li>Créer un utilisateur</li>
+      <li>Définir :
+        <ul style="margin-top: 0.5rem;">
+          <li>Mot de passe</li>
+          <li>Droits (SELECT, INSERT, UPDATE, DELETE…)</li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">PostgreSQL</h3>
+    <p>Utiliser requêtes SQL :</p>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>CREATE USER utilisateur WITH PASSWORD 'motdepasse';
+GRANT ALL PRIVILEGES ON DATABASE nom_base TO utilisateur;</code></pre>
+
+    <h2>💾 Sauvegarde et restauration</h2>
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Sauvegarde</h3>
+    <ul>
+      <li>Cliquer sur Exporter</li>
+      <li>Choisir :
+        <ul style="margin-top: 0.5rem;">
+          <li>Format SQL</li>
+          <li>Tables à exporter</li>
+        </ul>
+      </li>
+      <li>Télécharger le fichier</li>
+    </ul>
+
+    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.8rem; color: #e2e8f0;">Restauration</h3>
+    <ul>
+      <li>Cliquer sur Importer</li>
+      <li>Sélectionner le fichier SQL</li>
+      <li>Lancer l'import</li>
+    </ul>
+
+    <h2>🔎 Exécution de requêtes SQL</h2>
+    <ul>
+      <li>Accéder à Commande SQL</li>
+      <li>Saisir la requête (ex :)</li>
+    </ul>
+    <pre style="background: #0d1117; border: 1px solid #1e2d3d; padding: 1rem; margin: 1rem 0; border-radius: 4px; overflow-x: auto;"><code>SELECT * FROM utilisateurs;</code></pre>
+    <ul style="margin-top: 1rem;">
+      <li>Exécuter</li>
+    </ul>
+
+    <h2>🔒 Bonnes pratiques</h2>
+    <ul>
+      <li>Utiliser des mots de passe forts</li>
+      <li>Restreindre les accès réseau</li>
+      <li>Sauvegarder régulièrement les bases</li>
+      <li>Éviter l'utilisation du compte root</li>
+      <li>Surveiller les performances et logs</li>
+    </ul>
+
+    <h2>⚠️ Sécurité</h2>
+    <ul>
+      <li>Ne pas exposer Adminer publiquement sans protection</li>
+      <li>Ajouter une authentification (HTTP ou VPN)</li>
+      <li>Renommer le fichier adminer.php pour plus de sécurité</li>
+    </ul>
+
+    <h2>📌 Conclusion</h2>
+    <p>Adminer est une solution légère et efficace pour gérer MySQL et PostgreSQL via une interface web unique. Il permet d'effectuer toutes les opérations essentielles d'administration sans outils lourds.</p>
   </main>
 </body>
 </html>
