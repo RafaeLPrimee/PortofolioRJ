@@ -580,7 +580,7 @@
       </div>
       </a>
 
-      <a href="#" class="project-link">
+      <div class="project-link" style="cursor: pointer;" onclick="openPersonalProject()">
       <div class="project-card">
         <div class="project-num">03 —</div>
         <div class="project-arrow">↗</div>
@@ -590,10 +590,10 @@
           et infrastructure. Une réalisation qui me tient particulièrement à cœur.
         </p>
         <div class="project-tags">
-          <span class="tag">En développement</span>
+          <span class="tag">📁 Ouvrir le dossier</span>
         </div>
       </div>
-      </a>
+      </div>
 
       <!-- Carte "En cours" -->
       <div class="project-card" style="border-style: dashed; opacity: .6;">
@@ -816,6 +816,16 @@
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   });
+
+  // ─── Ouvrir le dossier projet personnel ───
+  function openPersonalProject() {
+    // URL du dossier en localhost
+    // Remplacez le numéro de port si nécessaire
+    const folderPath = 'http://localhost:8080/AE-Parfum';
+    
+    // Ouvrir le dossier dans une nouvelle fenêtre
+    window.open(folderPath, '_blank');
+  }
 </script>
 <script src="script.js"></script>
 </body>
