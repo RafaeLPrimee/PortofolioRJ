@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services Docker — Écosystème</title>
+  <link rel="icon" type="image/png" href="RJ-portfolio.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --surface: #111820;
+      --border: #1e2d3d;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --transition: .2s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(8, 12, 16, .88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.02em;
+      color: var(--accent);
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: background var(--transition), color var(--transition);
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+    /* ─── MAIN ─── */
+    main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 100px 4rem 4rem;
+      line-height: 1.8;
+    }
+
+    main h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--text);
+      letter-spacing: -.01em;
+    }
+
+    main > p {
+      font-size: .95rem;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 700px;
+    }
+
+    main h2 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-top: 2.5rem;
+      margin-bottom: 1.2rem;
+      color: var(--accent);
+      letter-spacing: -.01em;
+    }
+
+    main h3 {
+      font-family: var(--font-head);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: .8rem;
+      color: var(--text);
+    }
+
+    main p {
+      font-size: .9rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    main ul {
+      list-style: none;
+      padding-left: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    main li {
+      font-size: .9rem;
+      color: var(--muted);
+      padding-left: 1.5rem;
+      margin-bottom: .6rem;
+      position: relative;
+    }
+
+    main li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* ─── SERVICES GRID ─── */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .service-card {
+      background: linear-gradient(135deg, rgba(0,229,255,.06) 0%, rgba(124,58,237,.03) 100%);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.8rem;
+      border-radius: 4px;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .service-card:hover {
+      border-color: var(--accent);
+      border-left-color: var(--accent2);
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,229,255,.1);
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(0,229,255,.08), transparent);
+      opacity: 0;
+      transition: opacity var(--transition);
+    }
+
+    .service-card:hover::before {
+      opacity: 1;
+    }
+
+    .service-emoji {
+      font-size: 1.8rem;
+      margin-bottom: .8rem;
+      display: block;
+    }
+
+    .service-title {
+      font-family: var(--font-head);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: .8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .service-desc strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ─── CATEGORY SECTION ─── */
+    .category-section {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .category-label {
+      font-size: .72rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    /* ─── SUMMARY ─── */
+    .summary-box {
+      background: linear-gradient(135deg, rgba(124,58,237,.08) 0%, rgba(0,229,255,.04) 100%);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      padding: 2rem;
+      margin-top: 3rem;
+      border-radius: 4px;
+    }
+
+    .summary-box h3 {
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+
+    .summary-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .summary-item {
+      font-size: .85rem;
+      color: var(--muted);
+      padding: .8rem;
+      background: rgba(0,229,255,.03);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+    }
+
+    .summary-item strong {
+      color: var(--accent);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      main { padding: 90px 1.5rem 2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .summary-list { grid-template-columns: 1fr; }
+    }
+
+    pre {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: .8rem;
+      color: var(--accent);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">Raf<span>ael</span></a>
+    <a href="javascript:window.location.href='project-01.html'" class="nav-cta">← Retour</a>
+  </nav>
+
+  <main>
+    <h1>Services & Outils Docker</h1>
+    <p>Catalogue complet des services conteneurisés utilisés pour construire une infrastructure cloud complète, flexible et scalable.</p>
+
+    <!-- WEB & HÉBERGEMENT -->
+    <div class="category-section">
+      <div class="category-label">🌐 Web & Hébergement</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">🌐</span>
+          <div class="service-title">Apache</div>
+          <div class="service-desc">
+            Serveur web très populaire.<br><br>
+            <strong>👉 Sert à héberger</strong> des sites web ou applications (HTML, PHP…).<br>
+            <strong>👉 Souvent utilisé</strong> avec WordPress ou autres CMS.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">🌍</span>
+          <div class="service-title">WordPress</div>
+          <div class="service-desc">
+            CMS très populaire pour créer des sites web.<br><br>
+            <strong>👉 Permet de faire</strong> blogs, sites vitrines, e-commerce (avec plugins).<br>
+            <strong>👉 Fonctionne souvent</strong> avec Apache + MySQL.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BASES DE DONNÉES -->
+    <div class="category-section">
+      <div class="category-label">🗄️ Bases de Données</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">🗄️</span>
+          <div class="service-title">MySQL</div>
+          <div class="service-desc">
+            Système de gestion de base de données relationnelle.<br><br>
+            <strong>👉 Stocke les données</strong> pour des applications web.<br>
+            <strong>👉 Très courant</strong> avec WordPress, GLPI, etc.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">🐘</span>
+          <div class="service-title">PostgreSQL</div>
+          <div class="service-desc">
+            Autre système de base de données relationnelle.<br><br>
+            <strong>👉 Plus avancé</strong> que MySQL sur certains points (requêtes complexes, intégrité).<br>
+            <strong>👉 Utilisé</strong> par beaucoup d'applications modernes.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">🧰</span>
+          <div class="service-title">Adminer</div>
+          <div class="service-desc">
+            Interface web pour gérer des bases de données.<br><br>
+            <strong>👉 Permet d'accéder</strong> à MySQL, PostgreSQL, etc. via navigateur.<br>
+            <strong>👉 Alternative légère</strong> à phpMyAdmin.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GESTION DE DONNÉES NO-CODE -->
+    <div class="category-section">
+      <div class="category-label">📊 Gestion de Données (No-Code)</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">📊</span>
+          <div class="service-title">Baserow</div>
+          <div class="service-desc">
+            Base de données no-code (comme Airtable).<br><br>
+            <strong>👉 Permet de créer</strong> facilement des tables, formulaires et automatisations.<br>
+            <strong>👉 Utile</strong> pour gérer des données sans coder.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">🧩</span>
+          <div class="service-title">NocoDB</div>
+          <div class="service-desc">
+            Transforme une base SQL en interface type Airtable.<br><br>
+            <strong>👉 Permet de manipuler</strong> des données facilement avec une interface visuelle.<br>
+            <strong>👉 Utile</strong> pour équipes non techniques.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">📝</span>
+          <div class="service-title">AppFlowy</div>
+          <div class="service-desc">
+            Alternative open source à Notion.<br><br>
+            <strong>👉 Permet de gérer</strong> notes, bases de données, tâches.<br>
+            <strong>👉 Idéal</strong> pour organisation personnelle ou travail collaboratif.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN & OUTILS IT -->
+    <div class="category-section">
+      <div class="category-label">🛠️ Administration & Outils IT</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">🛠️</span>
+          <div class="service-title">GLPI</div>
+          <div class="service-desc">
+            Outil de gestion IT (ITSM).<br><br>
+            <strong>👉 Gestion des tickets</strong>, inventaire matériel, support utilisateur.<br>
+            <strong>👉 Très utilisé</strong> par les services informatiques.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">🔐</span>
+          <div class="service-title">FreeIPA</div>
+          <div class="service-desc">
+            Solution de gestion des identités et des accès.<br><br>
+            <strong>👉 Gère utilisateurs</strong>, groupes, authentification centralisée (LDAP, Kerberos).<br>
+            <strong>👉 Utilisé</strong> dans les environnements d'entreprise.
+          </div>
+        </div>
+
+        <div class="service-card">
+          <span class="service-emoji">📈</span>
+          <div class="service-title">ProjeQtOr</div>
+          <div class="service-desc">
+            Outil de gestion de projet open source.<br><br>
+            <strong>👉 Gère tâches</strong>, ressources, planning, budgets.<br>
+            <strong>👉 Adapté</strong> aux équipes structurées.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AUTOMATISATION & INTÉGRATIONS -->
+    <div class="category-section">
+      <div class="category-label">⚙️ Automatisation & Intégrations</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">⚙️</span>
+          <div class="service-title">n8n</div>
+          <div class="service-desc">
+            Outil d'automatisation (comme Zapier).<br><br>
+            <strong>👉 Permet de connecter</strong> des services et automatiser des workflows.<br>
+            <strong>👉 Exemple :</strong> envoyer un mail automatiquement quand un formulaire est rempli.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOCKER & ORCHESTRATION -->
+    <div class="category-section">
+      <div class="category-label">🐳 Docker & Orchestration</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">🐳</span>
+          <div class="service-title">Portainer</div>
+          <div class="service-desc">
+            Interface graphique pour gérer Docker.<br><br>
+            <strong>👉 Permet de créer</strong>, surveiller et administrer des conteneurs facilement.<br>
+            <strong>👉 Très pratique</strong> pour éviter la ligne de commande.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SÉCURITÉ & RÉSEAU -->
+    <div class="category-section">
+      <div class="category-label">🔒 Sécurité & Réseau</div>
+      <div class="services-grid">
+        <div class="service-card">
+          <span class="service-emoji">🔒</span>
+          <div class="service-title">PIA (Private Internet Access)</div>
+          <div class="service-desc">
+            Service VPN.<br><br>
+            <strong>👉 Permet de sécuriser</strong> et anonymiser la connexion internet.<br>
+            <strong>👉 Peut être utilisé</strong> dans des conteneurs pour protéger du trafic.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RÉSUMÉ -->
+    <div class="summary-box">
+      <h3>🧠 En Résumé</h3>
+      <div class="summary-list">
+        <div class="summary-item"><strong>Web & sites :</strong> Apache, WordPress</div>
+        <div class="summary-item"><strong>Bases de données :</strong> MySQL, PostgreSQL</div>
+        <div class="summary-item"><strong>No-code data :</strong> Baserow, NocoDB</div>
+        <div class="summary-item"><strong>Admin & IT :</strong> GLPI, FreeIPA</div>
+        <div class="summary-item"><strong>Automatisation :</strong> n8n</div>
+        <div class="summary-item"><strong>Docker :</strong> Portainer</div>
+        <div class="summary-item"><strong>Gestion projets :</strong> ProjeQtOr</div>
+        <div class="summary-item"><strong>Interface DB :</strong> Adminer</div>
+        <div class="summary-item"><strong>Organisation :</strong> AppFlowy</div>
+        <div class="summary-item"><strong>Sécurité réseau :</strong> PIA</div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>
