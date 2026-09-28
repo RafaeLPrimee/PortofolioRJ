@@ -441,12 +441,19 @@
     @media (max-width: 768px) { .school-layout { grid-template-columns: 1fr; } }
 
     .school-badge {
-      display: inline-block;
-      background: var(--surface);
+      display: block;
+      width: min(100%, 320px);
       border: 1px solid var(--border);
-      padding: 2.5rem;
-      text-align: center;
       margin-bottom: 1.5rem;
+      overflow: hidden;
+      background: #1ea9e8;
+      box-shadow: 0 16px 32px rgba(30, 169, 232, 0.18);
+    }
+    .school-badge img {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #1ea9e8;
     }
     .school-logo-text {
       font-family: var(--font-head);
@@ -748,8 +755,7 @@
       <!-- Colonne gauche -->
       <div>
         <div class="school-badge">
-          <div class="school-logo-text">MDS</div>
-          <div class="school-logo-sub">MyDigitalSchool</div>
+          <img src="assets/esicad-logo.png" alt="Logo ESICAD" />
         </div>
 
         <div class="info-block">
