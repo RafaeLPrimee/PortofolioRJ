@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Procédures — Active Directory</title>
+  <link rel="icon" type="image/png" href="RJ-portfolio.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400,600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080c10;
+      --bg2: #0d1117;
+      --surface: #111820;
+      --border: #1e2d3d;
+      --accent: #00e5ff;
+      --accent2: #7c3aed;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --font-head: 'Syne', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      --transition: .2s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-mono);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); }
+
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(8, 12, 16, .88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.02em;
+      color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    .nav-cta {
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .55rem 1.4rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      text-decoration: none;
+      transition: background var(--transition), color var(--transition);
+    }
+    .nav-cta:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 4rem 4rem;
+      min-height: 100vh;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      margin-bottom: 2rem;
+      transition: gap var(--transition);
+    }
+    .back-link:hover { gap: 0.8rem; }
+
+    h1 {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: clamp(2.3rem, 5vw, 3.8rem);
+      letter-spacing: -.02em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .intro {
+      color: var(--muted);
+      font-size: .95rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      max-width: 900px;
+    }
+
+    .procedure-block {
+      background: rgba(17, 24, 32, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.18);
+    }
+
+    h2 {
+      font-family: var(--font-head);
+      font-size: clamp(1.5rem, 2vw, 2rem);
+      color: var(--text);
+      margin: 0 0 1rem;
+      letter-spacing: -.01em;
+    }
+
+    h3 {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin: 1.5rem 0 0.8rem;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: .95rem;
+      margin-bottom: 1rem;
+    }
+
+    ul, ol {
+      margin: 1rem 0 1.5rem 1.2rem;
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: .92rem;
+    }
+
+    li {
+      margin-bottom: 0.5rem;
+      padding-left: 0.4rem;
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    code {
+      font-family: var(--font-mono);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.1rem 0.4rem;
+      color: var(--accent);
+      font-size: .88em;
+    }
+
+    pre {
+      background: rgba(8,12,16,0.9);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      color: var(--text);
+      font-size: .85rem;
+      line-height: 1.7;
+    }
+
+    .separator {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 2rem 0;
+    }
+
+    @media (max-width: 760px) {
+      nav {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      main {
+        padding: 100px 1.25rem 2rem;
+      }
+
+      .procedure-block {
+        padding: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">RJ <span>Portfolio</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projets</a></li>
+      <li><a href="index.html#school">École</a></li>
+      <li><a href="index.html#about">À propos</a></li>
+    </ul>
+    <a href="active-directory.html" class="nav-cta">Retour AD</a>
+  </nav>
+
+  <main>
+    <a href="active-directory.html" class="back-link">← Retour au projet</a>
+
+    <h1>Procédures</h1>
+    <p class="intro">
+      Ce document regroupe les procédures réalisées lors de la mise en place de l’environnement Active Directory,
+      incluant l’installation des services, la configuration réseau et la gestion des utilisateurs et groupes.
+    </p>
+
+    <section class="procedure-block">
+      <h2>Procédure 1 — VM Windows Server : Installation et mise en place de l’AD</h2>
+
+      <h3>1. Création de la machine virtuelle sur Proxmox</h3>
+      <ol>
+        <li>Se connecter à l’interface web de Proxmox.</li>
+        <li>Cliquer sur <strong>Créer une VM</strong>.</li>
+        <li>Donner un nom à la machine, par exemple : <code>SRV-AD</code></li>
+        <li>Sélectionner l’image ISO de <strong>Windows Server</strong>.</li>
+        <li>Configurer les ressources de la VM :</li>
+        <ul>
+          <li>CPU : 2 cœurs minimum</li>
+          <li>RAM : 4 Go minimum</li>
+          <li>Disque : 50 Go minimum</li>
+          <li>Carte réseau : interface reliée au réseau du laboratoire</li>
+        </ul>
+        <li>Terminer la création de la VM.</li>
+        <li>Démarrer la VM.</li>
+      </ol>
+
+      <h3>2. Installation de Windows Server</h3>
+      <ol>
+        <li>Démarrer la VM depuis l’ISO Windows Server.</li>
+        <li>Sélectionner la langue, le format horaire et le clavier.</li>
+        <li>Cliquer sur <strong>Installer maintenant</strong>.</li>
+        <li>Sélectionner l’édition de Windows Server souhaitée.</li>
+        <li>Accepter les conditions de licence.</li>
+        <li>Choisir <strong>Installation personnalisée</strong>.</li>
+        <li>Sélectionner le disque virtuel créé sur Proxmox.</li>
+        <li>Lancer l’installation.</li>
+        <li>Définir le mot de passe du compte <strong>Administrateur</strong>.</li>
+        <li>Se connecter à Windows Server.</li>
+      </ol>
+
+      <h3>3. Configuration du nom du serveur</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Aller dans <strong>Serveur local</strong>.</li>
+        <li>Cliquer sur le nom actuel de l’ordinateur.</li>
+        <li>Modifier le nom du serveur, par exemple : <code>SRV-AD</code></li>
+        <li>Redémarrer le serveur.</li>
+      </ol>
+
+      <h3>4. Configuration de l’adresse IP fixe</h3>
+      <p>Le serveur Active Directory doit disposer d’une adresse IP fixe.</p>
+      <ol>
+        <li>Ouvrir les paramètres réseau.</li>
+        <li>Accéder aux propriétés de la carte réseau.</li>
+        <li>Ouvrir <strong>IPv4</strong>.</li>
+        <li>Renseigner :</li>
+      </ol>
+      <ul>
+        <li>Adresse IP : selon le plan d’adressage du réseau</li>
+        <li>Masque : selon le réseau utilisé</li>
+        <li>Passerelle : adresse du routeur</li>
+        <li>DNS préféré : adresse IP du serveur lui-même</li>
+      </ul>
+      <p>Exemple :</p>
+      <pre>Adresse IP : 192.168.1.10
+Masque     : 255.255.255.0
+Passerelle : 192.168.1.1
+DNS        : 192.168.1.10</pre>
+
+      <h3>5. Installation du rôle Active Directory Domain Services</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Cliquer sur <strong>Ajouter des rôles et fonctionnalités</strong>.</li>
+        <li>Sélectionner <strong>Installation basée sur un rôle ou une fonctionnalité</strong>.</li>
+        <li>Sélectionner le serveur.</li>
+        <li>Cocher <strong>Services AD DS (Active Directory Domain Services)</strong>.</li>
+        <li>Accepter l’installation des fonctionnalités supplémentaires.</li>
+        <li>Cliquer sur <strong>Installer</strong>.</li>
+        <li>Attendre la fin de l’installation.</li>
+      </ol>
+
+      <h3>6. Promotion du serveur en contrôleur de domaine</h3>
+      <ol>
+        <li>Dans le Gestionnaire de serveur, cliquer sur la notification.</li>
+        <li>Sélectionner <strong>Promouvoir ce serveur en contrôleur de domaine</strong>.</li>
+        <li>Choisir <strong>Ajouter une nouvelle forêt</strong>.</li>
+        <li>Définir le nom du domaine.</li>
+      </ol>
+      <p>Exemple :</p>
+      <pre>Domaine : entreprise.local</pre>
+      <ol>
+        <li>Définir le mot de passe DSRM.</li>
+        <li>Laisser les options DNS proposées.</li>
+        <li>Vérifier les chemins de stockage.</li>
+        <li>Cliquer sur <strong>Installer</strong>.</li>
+        <li>Le serveur redémarre automatiquement.</li>
+      </ol>
+
+      <h3>7. Vérification</h3>
+      <ol>
+        <li>Se connecter avec le compte administrateur du domaine.</li>
+        <li>Ouvrir <strong>Utilisateurs et ordinateurs Active Directory</strong>.</li>
+        <li>Vérifier que le domaine apparaît.</li>
+        <li>Vérifier la présence du serveur dans les contrôleurs de domaine.</li>
+      </ol>
+      <p>Le serveur est maintenant <strong>contrôleur de domaine Active Directory</strong>.</p>
+    </section>
+
+    <div class="separator"></div>
+
+    <section class="procedure-block">
+      <h2>Procédure 2 — VM Windows Server : Installation et mise en place du DHCP</h2>
+
+      <h3>1. Préparation</h3>
+      <p>Le service DHCP permet d’attribuer automatiquement aux postes clients une adresse IP, un masque, une passerelle et un serveur DNS.</p>
+
+      <h3>2. Installation du rôle DHCP</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Cliquer sur <strong>Ajouter des rôles et fonctionnalités</strong>.</li>
+        <li>Choisir <strong>Installation basée sur un rôle ou une fonctionnalité</strong>.</li>
+        <li>Sélectionner le serveur.</li>
+        <li>Cocher <strong>Serveur DHCP</strong>.</li>
+        <li>Accepter l’installation des fonctionnalités supplémentaires.</li>
+        <li>Cliquer sur <strong>Installer</strong>.</li>
+      </ol>
+
+      <h3>3. Finalisation de l'installation DHCP</h3>
+      <ol>
+        <li>Cliquer sur la notification du Gestionnaire de serveur.</li>
+        <li>Sélectionner <strong>Terminer la configuration DHCP</strong>.</li>
+        <li>Suivre l’assistant.</li>
+        <li>Utiliser les informations du compte administrateur du domaine.</li>
+        <li>Terminer la configuration.</li>
+      </ol>
+
+      <h3>4. Création d'une étendue DHCP</h3>
+      <ol>
+        <li>Ouvrir <strong>Outils → DHCP</strong>.</li>
+        <li>Développer le nom du serveur.</li>
+        <li>Faire un clic droit sur <strong>IPv4</strong>.</li>
+        <li>Sélectionner <strong>Nouvelle étendue</strong>.</li>
+        <li>Donner un nom à l’étendue.</li>
+      </ol>
+      <p>Exemple :</p>
+      <pre>Nom : LAN-ENTREPRISE</pre>
+      <ol>
+        <li>Définir la plage d’adresses.</li>
+      </ol>
+      <pre>Début : 192.168.1.100
+Fin   : 192.168.1.200</pre>
+      <ol>
+        <li>Définir le masque :</li>
+      </ol>
+      <pre>255.255.255.0</pre>
+
+      <h3>5. Définition des exclusions</h3>
+      <p>Exemple :</p>
+      <pre>192.168.1.1 → 192.168.1.20</pre>
+      <p>Ces adresses peuvent être exclues de la distribution DHCP.</p>
+
+      <h3>6. Configuration de la durée du bail</h3>
+      <p>Définir la durée pendant laquelle une adresse IP est attribuée à un poste. La valeur par défaut peut être conservée.</p>
+
+      <h3>7. Configuration des options DHCP</h3>
+      <p>Configurer notamment :</p>
+      <ul>
+        <li>Routeur : <code>192.168.1.1</code></li>
+        <li>Serveur DNS : <code>192.168.1.10</code></li>
+        <li>Nom de domaine : <code>entreprise.local</code></li>
+      </ul>
+
+      <h3>8. Activation de l'étendue</h3>
+      <ol>
+        <li>Terminer l’assistant.</li>
+        <li>Ouvrir <strong>DHCP → IPv4</strong>.</li>
+        <li>Vérifier que l’étendue est active.</li>
+      </ol>
+
+      <h3>9. Test depuis un poste client</h3>
+      <pre>ipconfig /release
+ipconfig /renew
+ipconfig /all</pre>
+      <p>Vérifier que le poste reçoit une adresse IP, un masque, une passerelle, le serveur DNS et le domaine <code>entreprise.local</code>.</p>
+    </section>
+
+    <div class="separator"></div>
+
+    <section class="procedure-block">
+      <h2>Procédure 3 — VM Windows Server : Installation et mise en place du DNS</h2>
+      <p>Dans un environnement Active Directory, le DNS est indispensable pour permettre aux clients de trouver les services du domaine.</p>
+
+      <h3>1. Vérification de l'installation</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Aller dans <strong>Outils</strong>.</li>
+        <li>Cliquer sur <strong>DNS</strong>.</li>
+      </ol>
+
+      <h3>2. Vérification de la zone DNS</h3>
+      <ol>
+        <li>Développer le nom du serveur.</li>
+        <li>Développer <strong>Zones de recherche directe</strong>.</li>
+        <li>Vérifier la présence du domaine : <code>entreprise.local</code>.</li>
+      </ol>
+
+      <h3>3. Vérification de la zone inverse</h3>
+      <ol>
+        <li>Cliquer sur <strong>Zones de recherche inversée</strong>.</li>
+        <li>Sélectionner <strong>Nouvelle zone</strong>.</li>
+        <li>Choisir une zone principale.</li>
+        <li>Sélectionner la zone adaptée au réseau.</li>
+      </ol>
+      <p>Exemple pour <code>192.168.1.0/24</code> :</p>
+      <pre>1.168.192.in-addr.arpa</pre>
+
+      <h3>4. Création d'un enregistrement DNS</h3>
+      <ol>
+        <li>Ouvrir la zone <code>entreprise.local</code>.</li>
+        <li>Faire un clic droit.</li>
+        <li>Sélectionner <strong>Nouvel hôte (A ou AAAA)</strong>.</li>
+        <li>Renseigner un nom.</li>
+      </ol>
+      <pre>Nom : serveur
+IP  : 192.168.1.10</pre>
+      <p>On obtient :</p>
+      <pre>serveur.entreprise.local</pre>
+
+      <h3>5. Test du DNS</h3>
+      <pre>nslookup serveur.entreprise.local
+ping serveur.entreprise.local</pre>
+      <p>Si le nom est correctement résolu, le service DNS fonctionne.</p>
+    </section>
+
+    <div class="separator"></div>
+
+    <section class="procedure-block">
+      <h2>Procédure 4 — VM Windows Server : Mise en place des OU / Groupes / Utilisateurs</h2>
+      <p>L'organisation des utilisateurs permet de structurer l’Active Directory et d’appliquer plus facilement des stratégies.</p>
+
+      <h3>1. Ouverture de la console Active Directory</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Aller dans <strong>Outils</strong>.</li>
+        <li>Sélectionner <strong>Utilisateurs et ordinateurs Active Directory</strong>.</li>
+      </ol>
+
+      <h3>2. Création des unités d'organisation</h3>
+      <p>Dans le domaine <code>entreprise.local</code>, créer différentes OU.</p>
+      <pre>ENTREPRISE
+│
+├── Utilisateurs
+│
+├── Ordinateurs
+│
+├── Groupes
+│
+├── Administration
+│
+└── Informatique</pre>
+      <ol>
+        <li>Clic droit sur le domaine.</li>
+        <li>Sélectionner <strong>Nouveau → Unité d'organisation</strong>.</li>
+        <li>Donner un nom.</li>
+        <li>Valider.</li>
+      </ol>
+
+      <h3>3. Création des groupes</h3>
+      <p>Exemples :</p>
+      <pre>GG-Administratif
+GG-Informatique
+GG-Utilisateurs</pre>
+      <p>Choisir <strong>Type : Sécurité</strong> et selon les cas <strong>Étendue : Globale</strong>.</p>
+
+      <h3>4. Création des utilisateurs</h3>
+      <ol>
+        <li>Dans l’OU <strong>Utilisateurs</strong>.</li>
+        <li>Clic droit.</li>
+        <li>Sélectionner <strong>Nouveau → Utilisateur</strong>.</li>
+        <li>Renseigner prénom, nom, nom d’ouverture de session.</li>
+        <li>Définir le mot de passe.</li>
+        <li>Configuer les options du compte.</li>
+      </ol>
+      <pre>Nom : Dupont
+Prénom : Jean
+Identifiant : jdupont</pre>
+
+      <h3>5. Ajout des utilisateurs aux groupes</h3>
+      <ol>
+        <li>Clic droit sur l’utilisateur.</li>
+        <li>Sélectionner <strong>Propriétés</strong>.</li>
+        <li>Aller dans <strong>Membre de</strong>.</li>
+        <li>Cliquer sur <strong>Ajouter</strong>.</li>
+        <li>Sélectionner le groupe souhaité.</li>
+      </ol>
+
+      <h3>6. Organisation des ordinateurs</h3>
+      <p>Lorsque l’ordinateur rejoint le domaine, il apparaît dans le conteneur <strong>Computers</strong>. Il est possible de le déplacer dans une OU dédiée telle que <code>Ordinateurs</code>.</p>
+
+      <h3>7. Vérification</h3>
+      <p>Vérifier que les utilisateurs, groupes et ordinateurs sont bien positionnés dans les bonnes OU.</p>
+    </section>
+
+    <div class="separator"></div>
+
+    <section class="procedure-block">
+      <h2>Procédure 5 — VM Windows Server : Mise en place des GPO</h2>
+      <p>Les GPO (Group Policy Objects) permettent d’appliquer automatiquement des règles de configuration aux utilisateurs et aux ordinateurs du domaine.</p>
+
+      <h3>1. Ouverture de la console GPO</h3>
+      <ol>
+        <li>Ouvrir le <strong>Gestionnaire de serveur</strong>.</li>
+        <li>Aller dans <strong>Outils</strong>.</li>
+        <li>Ouvrir <strong>Gestion des stratégies de groupe</strong>.</li>
+      </ol>
+
+      <h3>2. Création d'une GPO</h3>
+      <ol>
+        <li>Faire un clic droit sur l’OU concernée.</li>
+        <li>Sélectionner <strong>Créer un objet GPO dans ce domaine, et le lier ici</strong>.</li>
+        <li>Donner un nom à la GPO.</li>
+      </ol>
+      <pre>GPO - Sécurité postes</pre>
+
+      <h3>3. Configuration d'une stratégie</h3>
+      <p>Faire un clic droit sur la GPO puis <strong>Modifier</strong>.</p>
+
+      <h3>4. Exemple : politique de mot de passe</h3>
+      <pre>Configuration ordinateur
+→ Stratégies
+→ Paramètres Windows
+→ Paramètres de sécurité
+→ Stratégies de comptes
+→ Stratégie de mot de passe</pre>
+      <p>Exemples de paramètres : longueur minimale, complexité, historique, durée maximale.</p>
+
+      <h3>5. Exemple : verrouillage du compte</h3>
+      <pre>Stratégies de comptes
+→ Stratégie de verrouillage du compte</pre>
+      <p>Exemple : seuil de verrouillage = 5 tentatives.</p>
+
+      <h3>6. Exemple : configuration du bureau utilisateur</h3>
+      <p>Dans <code>Configuration utilisateur → Stratégies → Paramètres d'administration</code>, il est possible de définir des restrictions.</p>
+
+      <h3>7. Mise à jour des stratégies</h3>
+      <pre>gpupdate /force</pre>
+
+      <h3>8. Vérification des GPO</h3>
+      <pre>gpresult /r
+gpresult /h C:\gpresult.html</pre>
+      <p>Ouvrir ensuite <code>C:\gpresult.html</code>.</p>
+
+      <h3>9. Test avec un utilisateur du domaine</h3>
+      <ol>
+        <li>Se connecter à un poste client avec un compte du domaine.</li>
+        <li>Vérifier que l’utilisateur est bien dans l’OU concernée.</li>
+        <li>Exécuter <code>gpupdate /force</code>.</li>
+        <li>Vérifier que les paramètres configurés dans la GPO sont appliqués.</li>
+      </ol>
+    </section>
+
+    <div class="separator"></div>
+
+    <section class="procedure-block">
+      <h2>Architecture générale du projet</h2>
+      <pre>                         PROXMOX
+                            │
+                            │
+                    ┌───────┴────────┐
+                    │   VM Windows   │
+                    │     Server     │
+                    │    SRV-AD      │
+                    └───────┬────────┘
+                            │
+        ┌───────────────────┼───────────────────┐
+        │                   │                   │
+       AD DS               DNS                DHCP
+        │                   │                   │
+        └───────────────────┼───────────────────┘
+                            │
+                     Domaine Active
+                       Directory
+                     entreprise.local
+                            │
+             ┌──────────────┼──────────────┐
+             │              │              │
+          Utilisateurs    Groupes        Ordinateurs
+             │              │              │
+             └──────────────┼──────────────┘
+                            │
+                           GPO
+                            │
+                    Postes clients</pre>
+    </section>
+  </main>
+</body>
+</html>
